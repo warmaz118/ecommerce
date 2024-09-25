@@ -26,6 +26,10 @@ class BrandResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-computer-desktop';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
+    protected static ?int $navigationSort = 2;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -48,7 +52,7 @@ class BrandResource extends Resource
                         
                         FileUpload::make('image')
                             ->image()
-                            ->directory('categories'),
+                            ->directory('brands'),
 
                         Toggle::make('isactive')
                             ->required()

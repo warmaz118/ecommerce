@@ -2,30 +2,36 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
-use Faker\Provider\ar_EG\Text;
-use Filament\Actions\ActionGroup;
 use Filament\Forms;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Tabs\Tab;
-use Filament\Forms\Components\TextInput;
+use App\Models\User;
+use Filament\Tables;
+use App\Models\Order;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
-use Filament\Resources\Pages\CreateRecord;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Faker\Provider\ar_EG\Text;
+use Filament\Resources\Resource;
+use Filament\Actions\ActionGroup;
+use Filament\Forms\Components\Tabs\Tab;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Resources\Pages\CreateRecord;
+use Filament\Forms\Components\DateTimePicker;
+use App\Filament\Resources\UserResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Resources\UserResource\RelationManagers\OrdersRelationManager;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
+    protected static ?string $recordTitleAttribute = 'name';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -89,8 +95,13 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            OrdersRelationManager::class
         ];
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'email'];
     }
 
     public static function getPages(): array
